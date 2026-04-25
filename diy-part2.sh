@@ -39,3 +39,29 @@ find . -name Makefile -path '*v2ray-geodata*' -delete
 find . -name Makefile -path '*mosdns*' -delete
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+
+# 集成 sirpdboy 插件
+rm -rf package/netwizard
+rm -rf package/lucky
+rm -rf package/luci-app-advanced
+rm -rf package/taskplan
+rm -rf package/timecontrol
+git clone --depth=1 https://github.com/sirpdboy/luci-app-netwizard package/netwizard
+git clone --depth=1 https://github.com/sirpdboy/luci-app-lucky package/lucky
+git clone --depth=1 https://github.com/sirpdboy/luci-app-advanced package/luci-app-advanced
+git clone --depth=1 https://github.com/sirpdboy/luci-app-taskplan package/taskplan
+git clone --depth=1 https://github.com/sirpdboy/luci-app-timecontrol package/timecontrol
+
+# 校验关键插件目录已按预期拉取，便于更早发现上游结构变化
+for dir in \
+  package/netwizard/luci-app-netwizard \
+  package/lucky/luci-app-lucky \
+  package/lucky/lucky \
+  package/luci-app-advanced \
+  package/taskplan/luci-app-taskplan \
+  package/timecontrol/luci-app-timecontrol; do
+  if [ ! -d "$dir" ]; then
+    echo "Missing expected package directory: $dir"
+    exit 1
+  fi
+done
