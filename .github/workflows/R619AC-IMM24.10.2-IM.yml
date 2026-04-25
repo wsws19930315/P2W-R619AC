@@ -22,6 +22,7 @@ env:
   CONFIG_FILE: 619IM.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
+  AUTO_RELEASE_PREFIX: R619AC-IMM24.10.2-
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -259,11 +260,48 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
 
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@v0.3.4
+      - name: Remove old auto releases
+        uses: actions/github-script@v7
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         with:
-          keep_latest: 30
-          delete_tags: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prefix = process.env.AUTO_RELEASE_PREFIX;
+            const keepLatest = 6;
+            const { owner, repo } = context.repo;
+
+            const releases = await github.paginate(
+              github.rest.repos.listReleases,
+              { owner, repo, per_page: 100 }
+            );
+
+            const autoReleases = releases
+              .filter(release => release.tag_name && release.tag_name.startsWith(prefix))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            const releasesToDelete = autoReleases.slice(keepLatest);
+
+            core.info(`Found ${autoReleases.length} auto releases with prefix ${prefix}`);
+            core.info(`Deleting ${releasesToDelete.length} old auto releases`);
+
+            for (const release of releasesToDelete) {
+              core.info(`Deleting release ${release.tag_name} (${release.id})`);
+              await github.rest.repos.deleteRelease({
+                owner,
+                repo,
+                release_id: release.id,
+              });
+
+              try {
+                await github.rest.git.deleteRef({
+                  owner,
+                  repo,
+                  ref: `tags/${release.tag_name}`,
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+                core.info(`Tag already missing: ${release.tag_name}`);
+              }
+            }
