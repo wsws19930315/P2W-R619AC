@@ -18,7 +18,10 @@ sed -i 's/^IMG_PREFIX\:\=.*/IMG_PREFIX:=IM-$(shell TZ=UTC-8 date +"%Y.%m.%d-%H%M
 
 # 页面版本号添加日期
 # sed -i "s/R[0-9]\+\.[0-9]\+\.[0-9]\+/&("$(date +%Y-%m-%d)")/g" package/lean/default-settings/files/zzz-default-settings
-curl -sfL https://github.com/leesuncom/package/raw/main/99-default-settings-chinese -o package/emortal/default-settings/files/99-default-settings-chinese
+mkdir -p package/emortal/default-settings/files
+if ! curl --retry 3 --retry-delay 5 -fsSL https://raw.githubusercontent.com/leesuncom/package/main/99-default-settings-chinese -o package/emortal/default-settings/files/99-default-settings-chinese; then
+  echo "Warning: failed to download 99-default-settings-chinese, keeping upstream defaults"
+fi
 
 # 修改主机名字，把OpenWrt-123修改你喜欢的就行（不能纯数字或者使用中文）
 # sed -i 's/ImmortalWrt/NeoBird/g' ./package/base-files/files/bin/config_generate
@@ -38,7 +41,10 @@ find . -name Makefile -path '*v2ray-geodata*' -delete
 find . -name Makefile -path '*mosdns*' -delete
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
-curl -sfL https://github.com/leesuncom/R619AC/raw/master/patch/mosdns -o package/mosdns/luci-app-mosdns/root/etc/config/mosdns
+mkdir -p package/mosdns/luci-app-mosdns/root/etc/config
+if ! curl --retry 3 --retry-delay 5 -fsSL https://raw.githubusercontent.com/leesuncom/R619AC/master/patch/mosdns -o package/mosdns/luci-app-mosdns/root/etc/config/mosdns; then
+  echo "Warning: failed to download custom mosdns config, keeping upstream defaults"
+fi
 
 # 集成 sirpdboy 插件
 rm -rf package/netwizard
