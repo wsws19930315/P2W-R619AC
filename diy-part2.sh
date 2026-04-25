@@ -6,9 +6,11 @@
 # See /LICENSE for more information.
 #
 # https://github.com/P3TERX/Actions-OpenWrt
-# File name: diy-2.sh
+# File name: diy-part2.sh
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
+
+set -e
 
 # 发布固件名称添加日期
 sed -i 's/^IMG_PREFIX\:\=.*/IMG_PREFIX:=IM-$(shell TZ=UTC-8 date +"%Y.%m.%d-%H%M")-$(IMG_PREFIX_VERNUM)$(IMG_PREFIX_VERCODE)$(IMG_PREFIX_EXTRA)$(BOARD)$(if $(SUBTARGET),-$(SUBTARGET))/g' include/image.mk
@@ -22,8 +24,8 @@ curl -sfL https://github.com/leesuncom/R619AC/raw/master/patch/mosdns -o package
 # 修改主机名字，把OpenWrt-123修改你喜欢的就行（不能纯数字或者使用中文）
 # sed -i 's/ImmortalWrt/NeoBird/g' ./package/base-files/files/bin/config_generate
 
-# 去除默认bootstrap主题
-sed -i 's/[b|B]ootstrap/argon/g' ./feeds/luci/collections/luci/Makefile
+# 去除默认 bootstrap 主题
+sed -i 's/[Bb]ootstrap/argon/g' ./feeds/luci/collections/luci/Makefile
 
 # echo "修改wifi名称"
 # sed -i "s/OpenWrt/$wifi_name/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
@@ -33,7 +35,7 @@ sed -i 's/192.168.1.1/192.168.88.1/g' package/base-files/files/bin/config_genera
 # rm -rf feeds/kiddin9/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
 # git clone https://github.com/sbwml/luci-app-mosdns -b v5 feeds/luci/applications/luci-app-mosdns
 
-find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
-find ./ | grep Makefile | grep mosdns | xargs rm -f
+find . -name Makefile -path '*v2ray-geodata*' -delete
+find . -name Makefile -path '*mosdns*' -delete
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata

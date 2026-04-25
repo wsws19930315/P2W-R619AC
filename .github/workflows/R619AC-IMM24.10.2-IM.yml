@@ -8,6 +8,8 @@ on:
         description: 'Debugging with tmate'
         required: false
         default: 'false'
+  schedule:
+    - cron: 0 0 28 * *
 
 permissions:
   contents: write
@@ -18,8 +20,8 @@ env:
   REPO_BRANCH: openwrt-24.10
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: 619IM.config
-  DIY_P1_SH: 24.10.2diy-1.sh
-  DIY_P2_SH: 24.10.2diy-2.sh
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -33,6 +35,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate required files
+        run: |
+          for file in "$FEEDS_CONF" "$CONFIG_FILE" "$DIY_P1_SH" "$DIY_P2_SH"; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
 
       - name: Initialization environment
         env:
@@ -225,6 +236,7 @@ jobs:
         run: |
           echo "## R619AC ImmortalWrt 24.10.2 稳定版固件" > release.txt
           echo "🕒 **构建时间**: $(date +"%Y-%m-%d %H:%M:%S")" >> release.txt
+          echo "📅 **自动发布**: 每月 28 日自动构建更新" >> release.txt
           echo "" >> release.txt
           echo "### 🏮 固件说明及默认配置" >> release.txt
           echo "- **后台地址**: 192.168.88.1" >> release.txt

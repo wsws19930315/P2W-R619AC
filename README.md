@@ -2,6 +2,17 @@
 
 本项目用于通过 GitHub Actions 自动化编译 **竞斗云2.0 R619AC (P2W-R619AC)** 路由器的 ImmortalWrt 固件。这是一个为自用量身打造的优化项目，并同步支持最新的 ImmortalWrt 主分支（Master）和 24.10.2 稳定分支。
 
+## 📁 当前主流程文件
+
+当前仓库参与构建的核心文件只有以下几项：
+
+- `619IM.config`
+- `feeds.conf.default`
+- `diy-part1.sh`
+- `diy-part2.sh`
+- `.github/workflows/R619AC-IMM-Master-IM.yml`
+- `.github/workflows/R619AC-IMM24.10.2-IM.yml`
+
 ## 🏮 固件默认配置
 
 刷入固件后，请参考以下默认配置进行路由器的初始化设置：
@@ -32,7 +43,7 @@
    - 提供了基于 `ImmortalWrt 24.10.2` 的稳定版本工作流。
    - 提供了基于 `ImmortalWrt Master` 分支的滚动更新工作流。
 2. **触发方式**:
-   - 📅 **定时构建**: 系统默认在每月的 28 日自动执行全量构建并发布。
+   - 📅 **定时构建**: `Master` 与 `24.10.2` 工作流默认都会在每月的 28 日自动执行构建并发布。
    - 🖱️ **手动触发**: 前往 `Actions` -> 选择工作流 -> 点击 `Run workflow` 手动运行，且支持勾选 tmate 进入 SSH debug 模式。
 
 ## 📥 获取与下载固件
