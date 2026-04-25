@@ -4,16 +4,7 @@
 
 ![image-20260425222841540](assets/image-20260425222841540.png)
 
-## 📁 当前主流程文件
 
-当前仓库参与构建的核心文件只有以下几项：
-
-- `619IM.config`
-- `feeds.conf.default`
-- `diy-part1.sh`
-- `diy-part2.sh`
-- `.github/workflows/R619AC-IMM-Master-IM.yml`
-- `.github/workflows/R619AC-IMM24.10.2-IM.yml`
 
 ## 🏮 固件默认配置
 
@@ -24,6 +15,8 @@
 - **管理密码**: 无密码 *(为了安全，请在初次直接登入后自行设定密码)*
 - **Wi-Fi 名称**: `ImmortalWrt` 或 `OpenWrt`
 - **Wi-Fi 密码**: 无密码
+
+
 
 ## 🌟 特色集成与优化
 
@@ -55,6 +48,8 @@
 2. **触发方式**:
    - 📅 **定时构建**: `Master` 与 `24.10.2` 工作流默认都会在每月的 28 日自动执行构建并发布。
    - 🖱️ **手动触发**: 前往 `Actions` -> 选择工作流 -> 点击 `Run workflow` 手动运行，且支持勾选 tmate 进入 SSH debug 模式。
+
+
 
 ## 📥 获取与下载固件
 
