@@ -2,7 +2,7 @@
 
 本项目用于通过 GitHub Actions 自动化编译 **竞斗云2.0 R619AC (P2W-R619AC)** 路由器的 ImmortalWrt 固件。这是一个为自用量身打造的优化项目，并同步支持最新的 ImmortalWrt 主分支（Master）和 24.10.2 稳定分支。
 
-![image-20260425222841540](.\assets\image-20260425222841540.png)
+![image-20260425222841540](assets/image-20260425222841540.png)
 
 ## 📁 当前主流程文件
 
