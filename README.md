@@ -1,6 +1,6 @@
 # P2W-R619AC ImmortalWrt 自用固件编译
 
-本项目用于通过 GitHub Actions 自动化编译 **竞斗星 R619AC (P2W-R619AC)** 路由器的 ImmortalWrt 固件。这是一个为自用量身打造的优化项目，并同步支持最新的 ImmortalWrt 主分支（Master）和 24.10.2 稳定分支。
+本项目用于通过 GitHub Actions 自动化编译 **竞斗云2.0 R619AC (P2W-R619AC)** 路由器的 ImmortalWrt 固件。这是一个为自用量身打造的优化项目，并同步支持最新的 ImmortalWrt 主分支（Master）和 24.10.2 稳定分支。
 
 ## 🏮 固件默认配置
 
