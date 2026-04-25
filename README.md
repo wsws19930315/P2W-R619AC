@@ -22,6 +22,7 @@
 - 🔗 **frpc（内网穿透）**：集成了 frp 客户端，支持自定义配置，实现内网设备的远程访问。
 - 🌍 **ddnsgo（动态 DNS）**：内置 ddnsgo，实现公网 IP 变化时自动更新域名解析。
 - 🖨️ **910nd（打印机）**：添加了 910nd 打印机插件，支持通过 USB/网络打印机直接打印。
+- 🌐 还有一些自用的插件
 
 ## 🚀 自动编译策略
 
@@ -44,3 +45,10 @@
 > **致谢 & 声明**:
 > 大量编译脚本逻辑源自于 [P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt) 项目。
 > 源码底包基于 [ImmortalWrt](https://github.com/immortalwrt/immortalwrt) 团队的贡献。
+
+
+
+## 📚 资源链接
+
+- 最新 opboot: [opboot-p2w-r619ac-nor-v1.1.2-3d5736d.img](https://github.com/vbskycn/P2W-R619AC/releases/download/opboot%E5%92%8C%E5%BA%95%E5%8C%85/opboot-p2w-r619ac-nor-v1.1.2-3d5736d.img)
+- 128M 底包: [openwrt-ipq40xx-p2w_r619ac-128m-squashfs-nand-factory.ubi](https://github.com/vbskycn/P2W-R619AC/releases/download/opboot%E5%92%8C%E5%BA%95%E5%8C%85/openwrt-ipq40xx-p2w_r619ac-128m-squashfs-nand-factory.ubi)
