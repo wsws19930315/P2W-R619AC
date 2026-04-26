@@ -39,7 +39,7 @@ jobs:
 
       - name: Validate required files
         run: |
-          for file in "$FEEDS_CONF" "$CONFIG_FILE" "$DIY_P1_SH" "$DIY_P2_SH"; do
+          for file in "$CONFIG_FILE" "$DIY_P1_SH" "$DIY_P2_SH"; do
             if [ ! -f "$file" ]; then
               echo "Missing required file: $file"
               exit 1
@@ -99,6 +99,8 @@ jobs:
 
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
+          sudo python3 -m pip install --upgrade --break-system-packages "cmake>=3.31,<3.32"
+          cmake --version
           sudo timedatectl set-timezone "$TZ"
 
           sudo mkdir -p /workdir
@@ -115,6 +117,9 @@ jobs:
         run: |
           if [ -e "$FEEDS_CONF" ]; then
             mv "$FEEDS_CONF" openwrt/feeds.conf.default
+          else
+            echo "Optional feeds file not found: $FEEDS_CONF"
+            echo "Using upstream default feeds.conf.default"
           fi
 
           chmod +x "$DIY_P1_SH"
