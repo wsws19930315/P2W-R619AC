@@ -18,7 +18,7 @@ permissions:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-25.12
-  FEEDS_CONF: feeds.conf.default
+  FEEDS_CONF: R619AC-25.12.feeds.conf.default
   CONFIG_FILE: R619AC-25.12.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
