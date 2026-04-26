@@ -101,7 +101,11 @@ jobs:
           sudo -E apt-get -qq clean
           python3 -m pip install --user --upgrade "cmake>=3.31,<3.32"
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-          export PATH="$HOME/.local/bin:$PATH"
+          sudo ln -sf "$HOME/.local/bin/cmake" /usr/local/bin/cmake
+          sudo ln -sf "$HOME/.local/bin/ctest" /usr/local/bin/ctest
+          sudo ln -sf "$HOME/.local/bin/cpack" /usr/local/bin/cpack
+          export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"
+          which cmake
           cmake --version
           sudo timedatectl set-timezone "$TZ"
 
@@ -168,6 +172,10 @@ jobs:
       - name: Download package
         id: package
         run: |
+          export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"
+          which cmake
+          cmake --version
+
           cd openwrt
           make defconfig
           make download -j$(($(nproc)+1))
@@ -178,8 +186,11 @@ jobs:
       - name: Compile the firmware
         id: compile
         run: |
-          cd openwrt
+          export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"
+          which cmake
+          cmake --version
 
+          cd openwrt
           echo "$(nproc) thread compile"
 
           make -j$(($(nproc)+1)) || make -j4 || make -j1 V=s
@@ -197,6 +208,8 @@ jobs:
       - name: If Error
         if: steps.compile.outcome == 'failure'
         run: |
+          export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"
+
           if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
             curl "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
               -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=Firmware compile failed."
@@ -240,17 +253,22 @@ jobs:
         id: tag
         if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "## R619AC ImmortalWrt Master 最新固件" > release.txt
-          echo "🕒 **构建时间**: $(date +"%Y-%m-%d %H:%M:%S")" >> release.txt
-          echo "📅 **自动发布**: 每月 28 日自动构建更新" >> release.txt
-          echo "" >> release.txt
-          echo "### 🏮 固件说明及默认配置" >> release.txt
-          echo "- **后台地址**: 192.168.88.1" >> release.txt
-          echo "- **管理账号**: root" >> release.txt
-          echo "- **管理密码**: (无密码，初次登录直接进入)" >> release.txt
-          echo "- **Wi-Fi 名称**: ImmortalWrt 或 OpenWrt" >> release.txt
-          echo "- **Wi-Fi 密码**: (默认无密码)" >> release.txt
-          echo "- **底层源码**: 基于 [ImmortalWrt Master 分支](https://github.com/immortalwrt/immortalwrt)" >> release.txt
+          cat > release.txt <<'EOF'
+          ## R619AC ImmortalWrt Master 最新固件
+
+          🕒 **构建时间**: BUILD_TIME
+          🚀 **发布方式**: 手动触发或 repository_dispatch
+
+          ### 🧧 固件说明及默认配置
+
+          - **后台地址**: 192.168.88.1
+          - **管理账号**: root
+          - **管理密码**: 无密码，初次登录直接进入
+          - **Wi-Fi 名称**: ImmortalWrt 或 OpenWrt
+          - **Wi-Fi 密码**: 默认无密码
+          - **底层源码**: 基于 [ImmortalWrt Master 分支](https://github.com/immortalwrt/immortalwrt)
+          EOF
+          sed -i "s/BUILD_TIME/$(date +"%Y-%m-%d %H:%M:%S")/" release.txt
 
           echo "release_tag=R619AC-IMM-Master-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT
