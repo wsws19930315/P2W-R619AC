@@ -12,41 +12,34 @@
 
 set -e
 
-# 发布固件名称添加日期
+# 为生成的固件镜像名称添加时间戳。
 sed -i 's/^IMG_PREFIX\:\=.*/IMG_PREFIX:=IM-$(shell TZ=UTC-8 date +"%Y.%m.%d-%H%M")-$(IMG_PREFIX_VERNUM)$(IMG_PREFIX_VERCODE)$(IMG_PREFIX_EXTRA)$(BOARD)$(if $(SUBTARGET),-$(SUBTARGET))/g' include/image.mk
-# sed -i 's/^IMG_PREFIX\:\=.*/IMG_PREFIX:=$(shell TZ=UTC-8 date +"%Y.%m.%d-%H%M")-$(IMG_PREFIX_VERNUM)$(IMG_PREFIX_VERCODE)$(IMG_PREFIX_EXTRA)$(BOARD)$(if $(SUBTARGET),-$(SUBTARGET))/g' include/image.mk
 
-# 页面版本号添加日期
-# sed -i "s/R[0-9]\+\.[0-9]\+\.[0-9]\+/&("$(date +%Y-%m-%d)")/g" package/lean/default-settings/files/zzz-default-settings
+# 下载中文默认设置，下载失败时保留上游默认值。
 mkdir -p package/emortal/default-settings/files
 if ! curl --retry 3 --retry-delay 5 -fsSL https://raw.githubusercontent.com/leesuncom/package/main/99-default-settings-chinese -o package/emortal/default-settings/files/99-default-settings-chinese; then
   echo "Warning: failed to download 99-default-settings-chinese, keeping upstream defaults"
 fi
 
-# 修改主机名字，把OpenWrt-123修改你喜欢的就行（不能纯数字或者使用中文）
-# sed -i 's/ImmortalWrt/NeoBird/g' ./package/base-files/files/bin/config_generate
-
-# 去除默认 bootstrap 主题
+# 将默认 LuCI 主题从 Bootstrap 切换为 Argon。
 sed -i 's/[Bb]ootstrap/argon/g' ./feeds/luci/collections/luci/Makefile
 
-# echo "修改wifi名称"
-# sed -i "s/OpenWrt/$wifi_name/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
-
-# 设置密码为空（安装固件时无需密码登陆，然后自己修改想要的密码）
+# 设置默认路由器 IP 地址。
 sed -i 's/192.168.1.1/192.168.88.1/g' package/base-files/files/bin/config_generate
-# rm -rf feeds/kiddin9/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
-# git clone https://github.com/sbwml/luci-app-mosdns -b v5 feeds/luci/applications/luci-app-mosdns
 
+# 替换 mosdns 和 v2ray-geodata 为自定义来源。
 find . -name Makefile -path '*v2ray-geodata*' -delete
 find . -name Makefile -path '*mosdns*' -delete
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+
+# 下载自定义 mosdns 配置，失败时保留上游默认值。
 mkdir -p package/mosdns/luci-app-mosdns/root/etc/config
 if ! curl --retry 3 --retry-delay 5 -fsSL https://raw.githubusercontent.com/leesuncom/R619AC/master/patch/mosdns -o package/mosdns/luci-app-mosdns/root/etc/config/mosdns; then
   echo "Warning: failed to download custom mosdns config, keeping upstream defaults"
 fi
 
-# 集成 sirpdboy 插件
+# 集成 sirpdboy 插件。
 rm -rf package/netwizard
 rm -rf package/lucky
 rm -rf package/luci-app-advanced
@@ -58,7 +51,7 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-advanced package/luci-a
 git clone --depth=1 https://github.com/sirpdboy/luci-app-taskplan package/taskplan
 git clone --depth=1 https://github.com/sirpdboy/luci-app-timecontrol package/timecontrol
 
-# 校验关键插件目录已按预期拉取，便于更早发现上游结构变化
+# 提前校验关键插件目录，便于上游目录结构变化时尽早失败。
 for dir in \
   package/netwizard/luci-app-netwizard \
   package/lucky/luci-app-lucky \
