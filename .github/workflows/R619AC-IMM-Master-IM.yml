@@ -8,8 +8,6 @@ on:
         description: 'Debugging with tmate'
         required: false
         default: 'false'
-  schedule:
-    - cron: 0 0 28 * *
 
 permissions:
   contents: write
@@ -19,7 +17,7 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: 619IM.config
+  CONFIG_FILE: R619AC-25.12.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   AUTO_RELEASE_PREFIX: R619AC-IMM-Master-
