@@ -33,11 +33,18 @@ rm -rf package/openclash
 git clone --depth=1 --filter=blob:none --sparse https://github.com/vernesong/OpenClash.git package/openclash
 git -C package/openclash sparse-checkout set luci-app-openclash
 
+# 使用官方 PassWall，按上游 README 的方法 2 接入。
+rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+rm -rf feeds/luci/applications/luci-app-passwall
+rm -rf package/passwall-packages
+rm -rf package/passwall-luci
+git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
+
 # 替换 mosdns 和 v2ray-geodata 为自定义来源。
 find . -name Makefile -path '*v2ray-geodata*' -delete
 find . -name Makefile -path '*mosdns*' -delete
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
-git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 # 下载自定义 mosdns 配置，失败时保留上游默认值。
 mkdir -p package/mosdns/luci-app-mosdns/root/etc/config
@@ -60,6 +67,8 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-timecontrol package/tim
 # 提前校验关键插件目录，便于上游目录结构变化时尽早失败。
 for dir in \
   package/openclash/luci-app-openclash \
+  package/passwall-packages \
+  package/passwall-luci/luci-app-passwall \
   package/netwizard/luci-app-netwizard \
   package/lucky/luci-app-lucky \
   package/lucky/lucky \
