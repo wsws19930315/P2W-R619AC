@@ -256,10 +256,10 @@ jobs:
           cat > release.txt <<'EOF'
           ## R619AC ImmortalWrt Master 最新固件
 
-          🕒 **构建时间**: BUILD_TIME
-          🚀 **发布方式**: 手动触发或 repository_dispatch
+          :clock3: **构建时间**: BUILD_TIME
+          :rocket: **发布方式**: 手动触发或 repository_dispatch
 
-          ### 🧧 固件说明及默认配置
+          ### :red_envelope: 固件说明及默认配置
 
           - **后台地址**: 192.168.88.1
           - **管理账号**: root
