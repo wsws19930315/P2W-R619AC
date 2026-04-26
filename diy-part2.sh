@@ -41,17 +41,6 @@ rm -rf package/passwall-luci
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
 
-# 替换 mosdns 和 v2ray-geodata 为自定义来源。
-find . -name Makefile -path '*v2ray-geodata*' -delete
-find . -name Makefile -path '*mosdns*' -delete
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
-
-# 下载自定义 mosdns 配置，失败时保留上游默认值。
-mkdir -p package/mosdns/luci-app-mosdns/root/etc/config
-if ! curl --retry 3 --retry-delay 5 -fsSL https://raw.githubusercontent.com/leesuncom/R619AC/master/patch/mosdns -o package/mosdns/luci-app-mosdns/root/etc/config/mosdns; then
-  echo "Warning: failed to download custom mosdns config, keeping upstream defaults"
-fi
-
 # 集成 sirpdboy 插件。
 rm -rf package/netwizard
 rm -rf package/lucky
