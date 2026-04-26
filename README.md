@@ -67,5 +67,5 @@
 
 ## 📚 资源链接
 
-- 最新 opboot: [opboot-p2w-r619ac-nor-v1.1.2-3d5736d.img](https://github.com/vbskycn/P2W-R619AC/releases/download/opboot%E5%92%8C%E5%BA%95%E5%8C%85/opboot-p2w-r619ac-nor-v1.1.2-3d5736d.img)
-- 128M 底包: [openwrt-ipq40xx-p2w_r619ac-128m-squashfs-nand-factory.ubi](https://github.com/vbskycn/P2W-R619AC/releases/download/opboot%E5%92%8C%E5%BA%95%E5%8C%85/openwrt-ipq40xx-p2w_r619ac-128m-squashfs-nand-factory.ubi)
+- 最新 opboot: [opboot-p2w-r619ac-nor-v1.1.2-3d5736d.img](https://github.com/vbskycn/immortalwrt-src/releases/download/P2W-R619AC/opboot-p2w-r619ac-nor-v1.1.2-3d5736d.img)
+- 128M 底包: [openwrt-ipq40xx-p2w_r619ac-128m-squashfs-nand-factory.ubi](https://github.com/vbskycn/immortalwrt-src/releases/download/P2W-R619AC/openwrt-ipq40xx-p2w_r619ac-128m-squashfs-nand-factory.ubi)
