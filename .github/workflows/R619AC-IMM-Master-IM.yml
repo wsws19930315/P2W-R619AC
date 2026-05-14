@@ -181,7 +181,7 @@ jobs:
 
           for pkg in \
             CONFIG_PACKAGE_luci-app-openclash=y \
-            CONFIG_PACKAGE_luci-app-passwall=y \
+            CONFIG_PACKAGE_luci-app-passwall=n \
             CONFIG_PACKAGE_xray-core=y; do
             if ! grep -qx "$pkg" .config; then
               echo "Missing required package after defconfig: ${pkg#CONFIG_PACKAGE_}"
@@ -272,7 +272,7 @@ jobs:
 
           ### :red_envelope: 固件说明及默认配置
 
-          - **后台地址**: 192.168.88.1
+          - **后台地址**: 192.168.1.1
           - **管理账号**: root
           - **管理密码**: 无密码，初次登录直接进入
           - **Wi-Fi 名称**: ImmortalWrt 或 OpenWrt
