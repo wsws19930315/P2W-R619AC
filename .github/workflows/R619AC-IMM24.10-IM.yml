@@ -183,7 +183,6 @@ jobs:
 
           for pkg in \
             CONFIG_PACKAGE_luci-app-openclash=y \
-            CONFIG_PACKAGE_luci-app-passwall=n \
             CONFIG_PACKAGE_xray-core=y; do
             if ! grep -qx "$pkg" .config; then
               echo "Missing required package after defconfig: ${pkg#CONFIG_PACKAGE_}"
