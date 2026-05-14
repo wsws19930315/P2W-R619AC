@@ -22,10 +22,10 @@ if ! curl --retry 3 --retry-delay 5 -fsSL https://raw.githubusercontent.com/lees
 fi
 
 # 将默认 LuCI 主题从 Bootstrap 切换为 Argon。
-sed -i 's/[Bb]ootstrap/argon/g' ./feeds/luci/collections/luci/Makefile
+# sed -i 's/[Bb]ootstrap/argon/g' ./feeds/luci/collections/luci/Makefile
 
 # 设置默认路由器 IP 地址。
-sed -i 's/192.168.1.1/192.168.88.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.1.1/g' package/base-files/files/bin/config_generate
 
 # 使用官方 OpenClash，避免第三方 feed 里的版本与当前 LuCI 不兼容。
 find . -name Makefile -path '*openclash*' -delete
